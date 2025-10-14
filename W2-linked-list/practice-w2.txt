@@ -1,11 +1,12 @@
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 -Challenge 1:
 
-void insertatTheBeginning(int value, Node*& head){
-    struct Node *newnode = new Node;
-    newnode->val = value;
-    newnode->next = head;
-    head = newnode; 
+void insertfront(int val){
+    Node* newNode = new Node;
+    newNode->val = val;
+    newNode->next = head;
+    head = newNode;
+    n++;
 }
 
 Q: Complexity : O(1)
@@ -15,16 +16,18 @@ Discussion : Compare to inserting at the beginning of the array this is much mor
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 -Challenge 2:
 
-void insertattheend( int value, Node*& head){
-    struct Node *newNode = new Node;
+void insertattheend(int value){
+    Node *newNode = new Node;
     newNode->val = value;
     newNode->next = nullptr;
-    struct Node *cur = head;
-    while (cur->next != nullptr)
-    {
-        cur = cur->next;
+    if (head == nullptr){
+        head= newNode;
+    } else {
+        Node *cur = head;
+        while (cur->next) cur = cur->next; 
+        cur->next = newNode;
     }
-    cur->next = newNode;
+    n++;
 }
 
 Q: Complexity : O(N)
@@ -32,21 +35,83 @@ Q: Complexity : O(N)
 Discussion :  In this Case we have to traverse the whole list because we did not keep track of the tail.
               if we are using array we do not have to traverse the whole list to insert at the end, Therefore it is more efficient to work with array in this case 
               but There is a limitation of the array being full while linkedlist does not have that problem.
+              but if we keep track of tail then inserting at the end of linked list is O(1) thus better than array.
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 -Challenge 3:
 
-void insert(Node* head, int target, int value){
-    Node *newnode = new Node;
-    newnode->val = value;
-    Node *cur = head;
-    while (cur->val != target && cur->next != nullptr){
-        cur = cur->next;
+void insert(int target, int value){
+    if (target > n){
+        cout<<"index out of range"<<endl;
+        return;
     }
-    newnode->next = cur->next;
-    cur->next = newnode;
+    if (target == n){
+        insertattheend(value);
+        return;
+    }
+    if (target < 0){
+        cout<<"the position cant be negative."<<endl;
+        return;
+    }
+    if( target == 0 ){
+        insertfront(value);
+        return;
+    }
+    Node* newNode = new Node;
+    newNode->val = value;
+    Node* cur = head;
+    for (int i=0;i<target-1;i++) cur = cur->next;
+    newNode->next = cur->next;
+    cur->next = newNode;
+    n++;
 }
-
-Q: Complexity : O(N)
+Complexity : O(N)
 
 Discussion : We have to point the new Node to the next node and then re-set the target node to point to the new Node. so there are 2 pointer that needed to be changed.
-             Compare to shifting elements in array This could be a bit more inefficient sicne we have to traverse about half the list plus we have to change some pointer too while shifting elements in array do not need to
+             Compare to array, inserting in middle of linked list is a bit more efficient while it both take roughly O(n) time but when traverse the linked list we only need to 
+             read the memory but shifting elements in array require to read memory and write memory, Therefore linked list is more efficient.
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+-Challenge 4
+
+void deletefront(){
+    if (head == nullptr){
+        cout<<"the list is empty."<<endl;
+        return;
+    }
+    Node* temp = head;
+    head = head->next;
+    delete temp;
+    n--;
+}
+Complexity : O(1)
+Discussion : -the head pointer is set to point to the next node.
+             -We created a temporary pointer to point at the node and after moving head to the next node we delete the old node.
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+-Challenge 5
+
+void deleteback(){
+    if (head == nullptr){
+        cout<<"the list is empty."<<endl;
+        return;
+    }
+    if(n == 1){
+        delete head;
+        head = nullptr;
+        n--;
+        return;
+    }
+    Node* cur = head;
+    while(cur->next->next) cur = cur->next;
+    Node* temp = cur->next;
+    cur->next = nullptr;
+    delete temp;
+    n--;
+}
+
+Complexity : O(N)
+
+Discussion : We find the node before the last node by checking the next two value (cur->next->next).
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Challenge 6:
+
+
+

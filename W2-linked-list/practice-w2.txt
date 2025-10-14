@@ -1,0 +1,52 @@
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+-Challenge 1:
+
+void insertatTheBeginning(int value, Node*& head){
+    struct Node *newnode = new Node;
+    newnode->val = value;
+    newnode->next = head;
+    head = newnode; 
+}
+
+Q: Complexity : O(1)
+
+Discussion : Compare to inserting at the beginning of the array this is much more efficient since We do not need to shift any elements.
+             To insert ann elements in the beginning of the linkedlist we just have to create a newnode and then point that new Node to the first node of the linked list.
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+-Challenge 2:
+
+void insertattheend( int value, Node*& head){
+    struct Node *newNode = new Node;
+    newNode->val = value;
+    newNode->next = nullptr;
+    struct Node *cur = head;
+    while (cur->next != nullptr)
+    {
+        cur = cur->next;
+    }
+    cur->next = newNode;
+}
+
+Q: Complexity : O(N)
+
+Discussion :  In this Case we have to traverse the whole list because we did not keep track of the tail.
+              if we are using array we do not have to traverse the whole list to insert at the end, Therefore it is more efficient to work with array in this case 
+              but There is a limitation of the array being full while linkedlist does not have that problem.
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+-Challenge 3:
+
+void insert(Node* head, int target, int value){
+    Node *newnode = new Node;
+    newnode->val = value;
+    Node *cur = head;
+    while (cur->val != target && cur->next != nullptr){
+        cur = cur->next;
+    }
+    newnode->next = cur->next;
+    cur->next = newnode;
+}
+
+Q: Complexity : O(N)
+
+Discussion : We have to point the new Node to the next node and then re-set the target node to point to the new Node. so there are 2 pointer that needed to be changed.
+             Compare to shifting elements in array This could be a bit more inefficient sicne we have to traverse about half the list plus we have to change some pointer too while shifting elements in array do not need to

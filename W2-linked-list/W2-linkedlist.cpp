@@ -17,7 +17,7 @@ class ListNode{
         int getn(){return n;}
 
         void print(){
-            Node* cur = head;
+            cur = head;
             while(cur){
                 cout<<cur->val<<"->";
                 cur = cur->next;
@@ -40,7 +40,7 @@ class ListNode{
             if (head == nullptr){
                 head= newNode;
             } else {
-                Node *cur = head;
+                cur = head;
                 while (cur->next) cur = cur->next; 
                 cur->next = newNode;
             }
@@ -67,7 +67,7 @@ class ListNode{
             }
             Node* newNode = new Node;
             newNode->val = value;
-            Node* cur = head;
+            cur = head;
             for (int i=0;i<target-1;i++) cur = cur->next;
             newNode->next = cur->next;
             cur->next = newNode;
@@ -109,21 +109,98 @@ class ListNode{
                 deletefront();
                 return;
             }
-            if (target > n){
+            if (target < 0 || target >= n){
                 cout<<"target is out of range."<<endl;
                 return;
             }
-            Node* cur = head;
+            cur = head;
             for(int i=0;i<target-1;i++) cur = cur->next;
-            if(cur->next == nullptr)[
+            if(cur->next == nullptr){
                 deleteback();
                 return;
-            ]
+            }
             Node* temp = cur->next;
             cur->next = cur->next->next;
             delete temp;
         }
+        //Challenge 7
+        void _traverse(){
+            cur = head;
+            while (cur){
+                cout<<cur->val<<"->";
+                cur = cur->next;
+            }
+            cout<<endl;
+        }
+        //Challenge 8
+        void swapNode(int node1, int node2) {
+            if (node1 == node2) return;
 
+            if (node1 > node2) swap(node1, node2);
+
+            Node *prev1 = nullptr, *prev2 = nullptr;
+            Node *n1 = head, *n2 = head;
+
+            for (int i = 0; i < node2; ++i) {
+                if (i < node1) {
+                    prev1 = n1;
+                    n1 = n1->next;
+                }
+                prev2 = n2;
+                n2 = n2->next;
+            }
+
+            if (!n1 || !n2) return;
+            if (n1->next == n2) {
+                if (prev1) prev1->next = n2;
+                else head = n2;
+
+                n1->next = n2->next;
+                n2->next = n1;
+            } else {
+                Node* temp = n2->next;
+
+                if (prev1) prev1->next = n2;
+                else head = n2;
+
+                if (prev2) prev2->next = n1;
+                else head = n1;
+
+                n2->next = n1->next;
+                n1->next = temp;
+            }
+        }
+        void swapValue(int node1, int node2){
+            cur = head;
+            Node* n1 = nullptr;
+            Node* n2 = nullptr;
+            for(int i=0;i<n;i++){
+                if (i == node1-1){
+                    n1 = cur;
+                } else if (i == node2-1){
+                    n2 = cur;
+                }
+                cur = cur->next;
+            }
+            int temp = n1->val;
+            n1->val = n2->val;
+            n2->val = temp;
+        }
+
+        //Challenge 9
+        int search(int target){
+            cur = head;
+            int location = 1;
+            while(cur){
+                if (cur->val == target){
+                    return location;
+                }
+                location++;
+                cur = cur->next;
+            }
+            cout<<"value not found."<<endl;
+            return 0;
+        }
 };
 
 
@@ -136,8 +213,10 @@ int main(){
     Linkedlist.insertfront(80);
     Linkedlist.insertattheend(10);
     Linkedlist.insert(2,22);
-    Linkedlist.deletefront();
     Linkedlist.print();
-    Linkedlist.deletemiddle(1);
+    cout<<(Linkedlist.search(80));
+    Linkedlist.swapNode(2,3);
+    Linkedlist.print();
+    Linkedlist.swapValue(3,4);
     Linkedlist.print();
 }
